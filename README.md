@@ -22,6 +22,7 @@ This is a simple task management API built with <a href="http://nodejs.org" targ
 - Swagger API documentation
 - Jest for endpoint testing
 - Docker containerization
+- Fastify with [handlebars](https://github.com/pillarjs/hbs#readme) (`hbs`) for a simple front-end example
 
 ## Setup Instructions
 
@@ -58,7 +59,29 @@ npm run start:dev
 npm run start:prod
 ```
 
-4. Access the application at `http://localhost:3000` and Swagger API documentation at `http://localhost:3000/api` (under development).
+4. Access the application using:
+  * `http://localhost:3000` for root page
+  * `http://localhost:3000/tasks` for querying all tasks
+  * `http://localhost:3000/index` for the fastify view with all tasks
+  * `http://localhost:3000/api` for the Swagger API documentation
+
+### Dockerfile
+
+To build and run your docker image use:
+
+```bash
+# Build the Docker image
+docker build -t nest-task-manager .
+
+# Run the Docker container
+docker run -p 3000:3000 nest-task-manager
+```
+
+Known bug: The dockeimage is failing with this error:
+```
+[Nest] 1  - 07/28/2024, 8:26:26 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
+DriverPackageNotInstalledError: SQLite package has not been found installed.
+```
 
 ## Test
 

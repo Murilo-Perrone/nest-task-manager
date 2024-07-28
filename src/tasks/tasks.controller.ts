@@ -1,10 +1,16 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Render } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from './task.entity';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
+
+  @Get('index')
+  @Render('index')
+  root() {
+    return {};
+  }
 
   @Get()
   findAll(): Promise<Task[]> {
