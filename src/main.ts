@@ -20,6 +20,7 @@ async function bootstrap() {
     .setTitle('Task Management API')
     .setDescription('API para gerenciar tarefas de um projeto')
     .setVersion('0.1')
+    .addTag('tasks')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
