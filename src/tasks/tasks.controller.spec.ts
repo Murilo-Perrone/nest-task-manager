@@ -46,7 +46,7 @@ describe('TasksController', () => {
 
   it('should return a single task', async () => {
     const taskId = 1;
-    const result = await tasksController.findOne(taskId.toString());
+    const result = await tasksController.findOne(taskId);
     expect(result).toEqual({
       id: taskId,
       title: 'Test Task',

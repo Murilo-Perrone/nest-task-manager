@@ -13,6 +13,7 @@ import {
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
 import { Task } from './task.entity';
+import { CreateTaskDto, UpdateTaskDto } from './dto/task.dto';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -43,7 +44,7 @@ export class TasksController {
   @ApiResponse({ status: 200, description: 'Returns the task for the specified ID.' })
   @ApiResponse({ status: 404, description: 'Task not found.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })  
-  async findOne(@Param('id') id: string): Promise<Task> {
+  async findOne(@Param('id') id: number): Promise<Task> {
     try {
       return await this.tasksService.findOne(+id);
     } catch (error) {
@@ -53,13 +54,13 @@ export class TasksController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new task' })
-  @ApiBody({ description: 'Details of the task to create', type: Task }) // CreateTaskDto
+  @ApiBody({ description: 'Details of the task to create', type: CreateTaskDto })
   @ApiResponse({ status: 201, description: 'The task has been successfully created.' })
   @ApiResponse({ status: 400, description: 'Invalid input data.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
-  async create(@Body() taskData: Partial<Task>): Promise<Task> {
+  async create(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
     try {
-      return await this.tasksService.create(taskData);
+      return await this.tasksService.create(createTaskDto);
     } catch (error) {
       throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -68,14 +69,14 @@ export class TasksController {
   @Put(':id')
   @ApiOperation({ summary: 'Update an existing task' })
   @ApiParam({ name: 'id', description: 'The ID of the task to update.' })
-  @ApiBody({ description: 'Updated details of the task', type: Task }) //UpdateTaskDto
+  @ApiBody({ description: 'Updated details of the task', type: UpdateTaskDto })
   @ApiResponse({ status: 200, description: 'The task has been successfully updated.' })
   @ApiResponse({ status: 404, description: 'Task not found.' })
   @ApiResponse({ status: 400, description: 'Invalid input data.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
-  async update(@Param('id') id: string, @Body() taskData: Partial<Task>): Promise<Task> {
+  async update(@Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto): Promise<Task> {
     try {
-      return await this.tasksService.update(+id, taskData);
+      return await this.tasksService.update(+id, updateTaskDto);
     } catch (error) {
       throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
     }
@@ -87,7 +88,7 @@ export class TasksController {
   @ApiResponse({ status: 200, description: 'The task has been successfully deleted.' })
   @ApiResponse({ status: 404, description: 'Task not found.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
-  async delete(@Param('id') id: string): Promise<void> {
+  async delete(@Param('id') id: number): Promise<void> {
     try {
       return await this.tasksService.delete(+id);
     } catch (error) {
